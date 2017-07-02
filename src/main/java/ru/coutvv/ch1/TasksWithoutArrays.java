@@ -143,7 +143,26 @@ public class TasksWithoutArrays {
         System.out.println("d = " + d + "; x = " + x + "; y = " + y);
     }
 
+    //1.1.17
+    // z == 2 nok(a,b), cause m*u + n*v == 2ab in all iteration of algorithm
+    // and nod(a,b)*nok(a,b) == ab
+    static void edejkstra(int a, int b) {
+        int m = a, n = b, u = b, v = a;
+        while(m !=0 && n != 0) {
+            if(m >= n) {
+                m -= n; v += u;
+            } else {
+                n -= m; u += v;
+            }
+        }
+        int z;
+        if( m == 0 ) z = v;
+        else z = u;
+        System.out.println(z);
+    }
+
+
     public static void main(String[] args) {
-        nodXYMod(17, 13);
+        edejkstra(13,17);
     }
 }
