@@ -161,8 +161,156 @@ public class TasksWithoutArrays {
         System.out.println(z);
     }
 
+    // 1.1.18 euclid algorithm with equotions:
+    // nod(2a,2b) == 2nod(a,b)
+    // nod(2a,b) = nod(a,b)
+    static void algEuclidVarEq(int a, int b) {
+        int m = a, n = b, d = 1;
+        //nod(a,b) = d nod(m,n)
+        while(m!=0 && n != 0) {
+            if(m%2 == 0 && n % 2 == 0) {
+                m/=2; n/=2; d*=2;
+            } else if(m%2 == 0) {
+                m/=2;
+            } else if(n%2 == 0) {
+                n/=2;
+            } else {
+                if(m>n) {
+                    m-=n;
+                } else
+                    n-=m;
+            }
+        }
+        int result = (m==0 ? n : m) * d;
+        System.out.println(result);
+
+    }
+
+    //1.1.19 added searching x,y in prev alg
+    static void algEuclidVarEqPQRS(int a, int b) {
+        int p = 1, q = 0, r = 0, s = 1;
+        int im = 1, in = 1;
+        int m = a, n = b, d = 1;
+        //nod(a,b) = d nod(m,n)
+        while(m!=0 && n != 0) {
+            if(m%2 == 0 && n % 2 == 0) {
+                m/=2; n/=2; d*=2;
+                if(r%2 != 0 || s %2 != 0) {
+                    r = r + b;
+                    s = s - a;
+                }
+                p /= 2; q /= 2;
+                if(r%2 != 0 || s %2 != 0) {
+                    r = r + b;
+                    s = s - a;
+                }
+                r /= 2; s /= 2;
+            } else if(m%2 == 0) {
+                m/=2;
+                if(p%2!=0 || q%2!=0) {
+                    p = p + b;
+                    q = q - a;
+                }
+                p/=2; q /= 2;
+            } else if(n%2 == 0) {
+                n/=2;
+                if(r%2 != 0 || s %2 != 0) {
+                    r = r + b;
+                    s = s - a;
+                }
+                r /= 2; s /= 2;
+            } else {
+                if(m>=n) {
+                    m -= n;
+                    p-=r; q-=s;
+                } else {
+                    n -= m;
+                    r-=p; s-=q;
+                }
+            }
+        }
+
+        int result = n*d;
+        int x = r, y = s;
+        if(n == 0) {
+            result = m*d;
+            x = p; y = q;
+        }
+        System.out.println(result);
+        System.out.println("x = " + x + "; y = " + y);
+        System.out.println(a*x+b*y);
+    }
+
+    //1.1.20 print all ^2 from 0 to N
+    static void printQuadro(int n){
+        for(int i = 0; i <= n; i++) {
+            System.out.print(i*i + " ");
+        }
+    }
+
+    //1.1.21 prev, but without *: +- only
+    static void printQuadroWithoutMulti(int n) {
+        int square = 0;
+        System.out.print(square + " ");
+        for(int i = 1; i <= n; i++) {
+            square = square + i + i - 1;
+            System.out.print(square + " ");
+        }
+    }
+
+    //1.1.21 v2 without minus
+    static void printQuadroWithoutMinusMulti(int n) {
+        int square = 0;
+        System.out.print(square + " ");
+        for(int i = 0; i < n; i++ ){
+            square += i + i + 1;
+            System.out.println(square);
+        }
+    }
+
+    //1.1.22 factoring
+    static void factoring(int n) {
+        while(n != 1) {
+            int l = 2;
+            while(n % l != 0)
+                l++;
+            System.out.print(l + " ");
+            n/=l;
+        }
+    }
+    //1.1.23
+    static void factoring2(int n) {
+        int l = 2;
+        while(n!= 1) {
+            if(n%l == 0) {
+                n/=l;
+                System.out.print(l + " ");
+            } else {
+                if(l*l > n)
+                    l=n;
+                else
+                    l++;
+            }
+        }
+    }
+
+    //1.1.24
+    static boolean isPrime(int n) {
+        int k = 2;
+        while(k*k < n) {
+            if(n%k == 0 )
+                return false;
+            k++;
+        }
+        return true;
+    }
+
+    //1.1.25[a] checking primeries to gauss number a+bi
+    static boolean isGaussPrime(int a, int b) {
+        return false;
+    }
 
     public static void main(String[] args) {
-        edejkstra(13,17);
+        System.out.println(isPrime(66));
     }
 }
