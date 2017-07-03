@@ -307,10 +307,59 @@ public class TasksWithoutArrays {
 
     //1.1.25[a] checking primeries to gauss number a+bi
     static boolean isGaussPrime(int a, int b) {
-        return false;
+        a = Math.abs(a); b = Math.abs(b);
+        for(int c = 1; c < a || c < b; c++) {
+            for(int d = 1; d < a || d < b; d++) {
+                if((a*c+b*d)%(c*c+d*d) == 0 && (a*d + b*c)%(c*c+d*d) == 0)
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    //1.1.25[b] print factoring of number
+    static void factoringGaussNumber(int a,int b) {
+
+        a = Math.abs(a); b = Math.abs(b);
+        for(int c = 0; (c <= a || c <= b) ;) {
+            for(int d = 0; d <= a || d <= b;) {
+                if(c==0 && d == 0 ||
+                        c == 1 && d == 0 ||
+                        c == 0 && d == 1) {
+                    d++;
+                    //nothing
+                } else if((a == c && b == d || a == d && b == c) && isGaussPrime(a,b)) {
+                    System.out.print("("+a + ", " + b + "); ");
+                    a = 1; b = 0;
+                } else if((a*c+b*d)%(c*c+d*d) == 0 && (a*d + b*c)%(c*c+d*d) == 0 && isGaussPrime(c,d)) {
+                    System.out.print("("+c + ", " + d + "); ");
+                    System.out.print("("+c + ", -" + d + "); ");
+                    Complex next = divide(new Complex(a,b), new Complex(c,d));
+                    next = divide(next, new Complex(c,-d));
+                    a = next.a; b = next.b;
+                } else
+                    d++;
+            }
+            c++;
+        }
+    }
+
+    static Complex divide(Complex c1, Complex c2) {
+        int real = (c1.a*c2.a + c1.b*c2.b) / (c2.a*c2.a + c2.b*c2.b);
+        int image = (- c1.a*c2.b + c1.b*c2.a) / (c2.a*c2.a + c2.b*c2.b);
+        return new Complex(real, image);
+    }
+
+    static class Complex {
+        int a,b;
+        public Complex(int a, int b) {
+            this.a = a;
+            this.b = b;
+        }
     }
 
     public static void main(String[] args) {
-        System.out.println(isPrime(66));
+//        System.out.println(isGaussPrime(0,-2));
+        factoringGaussNumber(136,0);
     }
 }
