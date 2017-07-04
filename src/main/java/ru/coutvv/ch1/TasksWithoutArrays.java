@@ -319,45 +319,55 @@ public class TasksWithoutArrays {
 
     //1.1.25[b] print factoring of number
     static void factoringGaussNumber(int a,int b) {
-
         a = Math.abs(a); b = Math.abs(b);
-        for(int c = 0; (c <= a || c <= b) ;) {
-            for(int d = 0; d <= a || d <= b;) {
-                if(c==0 && d == 0 ||
-                        c == 1 && d == 0 ||
-                        c == 0 && d == 1) {
-                    d++;
-                    //nothing
-                } else if((a == c && b == d || a == d && b == c) && isGaussPrime(a,b)) {
-                    System.out.print("("+a + ", " + b + "); ");
-                    a = 1; b = 0;
-                } else if((a*c+b*d)%(c*c+d*d) == 0 && (a*d + b*c)%(c*c+d*d) == 0 && isGaussPrime(c,d)) {
-                    System.out.print("("+c + ", " + d + "); ");
-                    System.out.print("("+c + ", -" + d + "); ");
-                    Complex next = divide(new Complex(a,b), new Complex(c,d));
-                    next = divide(next, new Complex(c,-d));
-                    a = next.a; b = next.b;
-                } else
-                    d++;
+        Complex cur = new Complex(a,b);
+        int max = Math.max(a,b);
+        for(int i = 2; i <= max && !cur.isOne(); i++ ) {
+            for(int k = 1; k < i; k++) {
+                int t = i - k;
+                Complex divider = new Complex(k,t);
+                while(cur.isModded(divider)) {
+                    cur = cur.divide(divider);
+                    System.out.print("("+t + ", " + k + "); ");
+                    cur = cur.divide(new Complex(k, -t));
+                    System.out.print("("+t + ", -" + k + "); ");
+                }
             }
-            c++;
+            Complex divider = new Complex(i,0);
+            while(cur.isModded(divider)) {
+                cur = cur.divide(divider);
+                System.out.print("("+i + ", " + 0 + "); ");
+            }
+            divider = new Complex(0,i);
+            while(cur.isModded(divider)) {
+                cur = cur.divide(divider);
+                System.out.print("("+0 + ", " + i + "); ");
+            }
         }
     }
 
-    static Complex divide(Complex c1, Complex c2) {
-        int real = (c1.a*c2.a + c1.b*c2.b) / (c2.a*c2.a + c2.b*c2.b);
-        int image = (- c1.a*c2.b + c1.b*c2.a) / (c2.a*c2.a + c2.b*c2.b);
-        return new Complex(real, image);
-    }
-
     static class Complex {
-        int a,b;
+        final int a,b;
         public Complex(int a, int b) {
             this.a = a;
             this.b = b;
         }
-    }
+        Complex divide(Complex c2) {
+            int modx2 = (c2.a*c2.a + c2.b*c2.b);
+            int real = (a*c2.a + b*c2.b) / modx2;
+            int image = (b*c2.a - a*c2.b) / modx2;
+            return new Complex(real, image);
+        }
 
+        boolean isModded(Complex div) {
+            int modx2 = (div.a*div.a + div.b*div.b);
+            return (a*div.a + b*div.b)%modx2 == 0 && (b*div.a - a*div.b)%modx2 == 0;
+        }
+        boolean isOne() {
+            return a == 1 && b == 0;
+        }
+    }
+    
     public static void main(String[] args) {
 //        System.out.println(isGaussPrime(0,-2));
         factoringGaussNumber(136,0);
