@@ -367,9 +367,63 @@ public class TasksWithoutArrays {
             return a == 1 && b == 0;
         }
     }
-    
+
+    // 1.1.26
+    static void printByOneChar(long number) {
+        long x = 1;
+        while(number/x/10 != 0) {
+            x*=10;
+        }
+        while(x>0) {
+            System.out.print(number/x + "_");
+            number-=x*(number/x);
+            x/=10;
+        }
+    }
+
+    // 1.1.27
+    static void printReverseByOneChar(long number) {
+        while(number!=0) {
+            System.out.print(number%10);
+            number /= 10;
+        }
+    }
+
+    // 1.1.28 x^2 + y^2 < n
+    static int countSolutions(int n) {
+        int result = 0;
+        for(int x = 0; x*x < n; x++) {
+            for(int y = 0; x*x + y*y <= n; y++) {
+                result++;
+            }
+        }
+        return result;
+    }
+
+    // 1.1.29
+    static int countSolutionSqrtN(int n) {
+        int result = 0;
+        int y = 0, top;
+        while(y*y <= n) y++;
+        y--; top = y;
+        for(int x = 0; x <= top; x++) {
+            while(x*x + y*y > n) y--;
+            result+=y+1;
+        }
+        return result;
+    }
+
+    // 1.1.30 print k digit of 1/n mantissa
+    static void printMantissa(int n, int k){
+        int r = 1;
+        for(int i = 0; i <k; i++) {
+            System.out.print((10*r)/n);
+            r = (10*r)%n;
+        }
+    }
+
+
     public static void main(String[] args) {
-//        System.out.println(isGaussPrime(0,-2));
-        factoringGaussNumber(136,0);
+        printMantissa(7, 15);
     }
 }
